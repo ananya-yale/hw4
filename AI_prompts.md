@@ -293,6 +293,23 @@ Documented all three changes — what was built and why it helps customers/the b
 - [output/harness.md](output/harness.md) — added a final "Problem 12" section covering the audit trail schema, the full safety rules list, a table of every `models.py` field and why it was chosen, a tools/abilities table, and a specs section (model names, loop limit, result/history/audit caps, low-stock thresholds, and the exact run commands for both frontend and backend).
 - Verified: triggered multiple real chat turns (a category search, a multi-tool-call stock question, and a prompt-injection attempt that genuinely hit Azure's content filter) through the live server, confirmed each appended correctly to `audit_trail.json` without erasing prior entries, then did a full backend restart and confirmed the file still had all prior entries plus a new one — proving true append-only, cross-restart persistence. Also directly tested the new "no fabricated discounts" safety rule (asked for 50% off) — correctly declined while staying helpful.
 
-## Problem 13
+## Problem 13: Push to GitHub and submit the URL
 
-*(prompts go here)*
+**Prompt 1:**
+> problem 13 is "push to github and submit the url"
+>
+> let's put everything into a folder called hw4 and push it to a public github repository. do NOT include my real .env, campus_customs.db, or product images in the repo. make sure we are using .gitignore. include .env.example with placeholders only. the file layout we want is attached as a screenshot (the cut off part says --reload --port 8000)
+>
+> the local only data pack should just contain campus_customs.db and products/ in the data/ folder.
+>
+> the agent should be contained in four files under backend/: prompts/prompt.md, agent.py, tools.py, and models.py
+>
+> README.md should explain how to run front and back ends after placing the data pack
+
+*What was built:*
+- Created a clean new root at `C:\Users\anany\Documents\AI Foundations\hw4` (sibling to the working `Homework 4` folder) and copied over exactly the files needed to match the requested layout: `AI_prompts.md`, `requirements.txt` (moved from `backend/` to the repo root), `.env.example`, `README.md`, `frontend/` (source + config only — no `node_modules`/`dist`), `backend/` (the four agent files plus the necessarily-supporting `main.py`, `db.py`, `security.py`), and `output/` (`harness.md`, `design.md`, `usability.md`, `app_check.html`, `app_check_images/`, `audit_trail.json`). Did **not** copy `venv/`, `data/` (db + product images), `node_modules/`, `.claude/`, or log files.
+- Wrote a new root [.gitignore](.gitignore) excluding `.env`, the entire `data/` folder, `venv/`, `__pycache__/`, `frontend/node_modules`/`dist`, and `*.log`.
+- Rewrote [README.md](README.md) for a fresh clone: where to place the data pack (`data/data/campus_customs.db` + `data/data/products/`), how to set up `.env` from `.env.example`, and exact run commands for both backend and frontend — removed the old README's reference to a shared `../.env` one level up, since that only made sense in the original course-folder layout, not a standalone public repo.
+- Verified before committing: `find` for any `.env`/`__pycache__`/`node_modules`/`venv`/`data` turned up nothing, staged file list (`git status`) was exactly the 49 expected files, repo size ~507KB.
+- Git/GitHub logistics: this machine had no `gh` CLI and no git identity configured. Per the git safety protocol, did not set git config myself — asked the user to run `git config --global user.name/user.email` themselves and to create the empty public repo on github.com, since both are account-level/identity actions outside what I should do unilaterally. User provided the remote: `https://github.com/ananya-yale/hw4.git`.
+- Ran `git init`, `git add -A`, `git commit`, `git remote add origin ...`, `git push -u origin main` — pushed successfully on the first attempt (confirmed via `git ls-remote origin` matching the local commit hash exactly).
