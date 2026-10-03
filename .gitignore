@@ -1,0 +1,17 @@
+# Secrets
+.env
+
+# Local-only data pack (database + product images) — never committed
+data/
+
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Node / frontend build
+frontend/node_modules/
+frontend/dist/
+
+# Logs
+*.log
